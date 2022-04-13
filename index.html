@@ -39,11 +39,37 @@
 			@click="setBrushColor('#' + color)"
 		></button>
 	</div>
+	<div>
+		<label>
+			<span>brushSize</span>
+			<input
+				type="range"
+				v-model="brushSize"
+				step="1"
+				min="1"
+				max="20"
+			/>
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>randomSeed</span>
+			<input
+				type="range"
+				v-model="randomSeed"
+				step="1"
+				min="1"
+				max="255"
+			/>
+		</label>
+	</div>
 </div>
 <div>Inspiration: <a href="https://twitter.com/MrmoTarius/status/1474359705787064322" target="_blank">"Cherry Blossom" by Mrmo Tarius</a></div>
 <div>Also this hell yeah: <a href="https://twitter.com/MrmoTarius/status/1474334106754371585" target="_blank">And this editor? Yeeeeah~</a></div>
+<div>See also: <a href="https://en.wikipedia.org/wiki/Truchet_tiles#Quarter-circles" target="_blank">Truchet Tiles on Wikipedia</a></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.32/vue.global.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vue/3.2.32/vue.global.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
 <script src="./index.js"></script>
 </body>
 </html>

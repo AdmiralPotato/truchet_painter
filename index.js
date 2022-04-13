@@ -1,3 +1,5 @@
+var tau = Math.PI * 2;
+var quarterTurn = tau * 0.25;
 var app = window.Vue.createApp({
 	data: function () {
 		return {
@@ -6,13 +8,21 @@ var app = window.Vue.createApp({
 			height: 20,
 			lastPoint: null,
 			currentColor: '#fff',
-			colors: 'ff5400-ff6d00-ff8500-ff9100-ff9e00-00b4d8-0096c7-0077b6-023e8a-03045e'.split('-'),
+			colors: 'ff5400-ff6d00-ff8500-ff9100-ff9e00-00b4d8-0096c7-0077b6-023e8a-03045e-03071e-370617-6a040f-9d0208-d00000-dc2f02-e85d04-f48c06-faa307-ffba08'.split('-'),
+			brushSize: 5,
+			randomSeed: 5,
 		};
+	},
+	watch: {
+		brushSize: function (newValue) {
+			this.context.lineWidth = newValue;
+		},
+		randomSeed: 'drawToTheBiggerCanvas',
 	},
 	mounted: function () {
 		this.context = this.$refs.a.getContext('2d');
 		this.context.strokeStyle = this.currentColor;
-		this.context.lineWidth = 5;
+		this.context.lineWidth = this.brushSize;
 		this.context.lineCap = 'round';
 	},
 	computed: {
@@ -37,8 +47,8 @@ var app = window.Vue.createApp({
 		},
 		bProps: function () {
 			return {
-				width: this.aProps.width * this.multiplier,
-				height: this.aProps.width * this.multiplier,
+				width: this.width * this.multiplier,
+				height: this.height * this.multiplier,
 			};
 		},
 		drawHandlers: function () {
@@ -46,12 +56,13 @@ var app = window.Vue.createApp({
 				mousedown: this.mousedown,
 				mousemove: this.mousemove,
 				mouseup: this.mouseup,
-			}
+				mouseout: this.mouseout,
+			};
 		},
 	},
 	methods: {
 		setBrushColor: function (color) {
-			this.currentColor = color;
+			this.currentColor = color + '33';
 			this.context.strokeStyle = this.currentColor;
 		},
 		getPointFromEvent: function (event) {
@@ -62,7 +73,6 @@ var app = window.Vue.createApp({
 		},
 		mousedown: function (event) {
 			var point = this.getPointFromEvent(event);
-			console.log('CLICK!!!', point);
 			var context = this.context;
 			context.beginPath();
 			context.moveTo(point.x, point.y);
@@ -73,7 +83,6 @@ var app = window.Vue.createApp({
 		mousemove: function (event) {
 			if (this.lastPoint) {
 				var point = this.getPointFromEvent(event);
-				console.log('MOVE!!!', point);
 				var context = this.context;
 				context.beginPath();
 				context.moveTo(this.lastPoint.x, this.lastPoint.y);
@@ -83,16 +92,56 @@ var app = window.Vue.createApp({
 			}
 		},
 		mouseup: function (event) {
-			var point = this.getPointFromEvent(event);
-			console.log('END!!!', point);
-			var context = this.context;
-			context.beginPath();
-			context.moveTo(this.lastPoint.x, this.lastPoint.y);
-			context.lineTo(point.x, point.y);
-			context.stroke();
+			if (this.lastPoint) {
+				var point = this.getPointFromEvent(event);
+				var context = this.context;
+				context.beginPath();
+				context.moveTo(this.lastPoint.x, this.lastPoint.y);
+				context.lineTo(point.x, point.y);
+				context.stroke();
+				this.lastPoint = null;
+				this.drawToTheBiggerCanvas();
+			}
+		},
+		mouseout: function () {
 			this.lastPoint = null;
 		},
+		drawToTheBiggerCanvas: function () {
+			var sourceContext = this.context;
+			var destinationContext = this.$refs.b.getContext('2d');
+			var sourceColors = sourceContext.getImageData(0, 0, this.width, this.height).data;
+			var width = this.width;
+			var height = this.height;
+			var multiplier = this.multiplier;
+			var half = multiplier / 2;
+			var rng = new Math.seedrandom(this.randomSeed);
+			var startAngleTurns = 0;
+			var startAngle = 0;
+			var color;
+			var pixelOffset;
+			destinationContext.lineWidth = half;
+			destinationContext.lineCap = 'round';
+			destinationContext.clearRect(0, 0, width * multiplier, height * multiplier);
+			for (var y = 0; y < height; y++) {
+				for (var x = 0; x < width; x++) {
+					startAngleTurns = Math.floor(rng() * 4);
+					startAngle = startAngleTurns * quarterTurn;
+					pixelOffset = ((y * width) + x) * 4;
+					color = sourceColors.slice(pixelOffset, pixelOffset + 3);
+					destinationContext.strokeStyle = `rgb(${color.join(',')})`;
+					destinationContext.beginPath();
+					destinationContext.arc(
+						(x * multiplier) + half,
+						(y * multiplier) + half,
+						half,
+						startAngle,
+						(startAngleTurns * quarterTurn) + quarterTurn
+					);
+					destinationContext.stroke();
+				}
+			}
+		},
 	}
-})
+});
 
-app.mount('#app')
+app.mount('#app');

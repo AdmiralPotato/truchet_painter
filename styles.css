@@ -22,3 +22,11 @@ canvas {
 	border: 1px solid #333;
 	image-rendering: pixelated;
 }
+
+label > span {
+	display: block;
+}
+label > input {
+	display: block;
+	width: 100%;
+}
