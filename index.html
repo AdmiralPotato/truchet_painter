@@ -17,12 +17,12 @@
 >
 	<div>
 		<canvas
-			ref="a"
+			ref="aCanvas"
 			v-bind="aProps"
 			v-on="drawHandlers"
 		></canvas>
 		<canvas
-			ref="b"
+			ref="bCanvas"
 			v-bind="bProps"
 		></canvas>
 	</div>
@@ -36,7 +36,10 @@
 				width: this.buttonSize,
 				height: this.buttonSize,
 			}"
-			@click="setBrushColor('#' + color)"
+			:class="{
+				active: currentColor === color
+			}"
+			@click="currentColor = color"
 		></button>
 	</div>
 	<div>

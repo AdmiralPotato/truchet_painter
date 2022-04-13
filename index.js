@@ -14,13 +14,16 @@ var app = window.Vue.createApp({
 		};
 	},
 	watch: {
+		currentColor: function (newValue) {
+			this.context.strokeStyle = '#' + newValue + '33';
+		},
 		brushSize: function (newValue) {
 			this.context.lineWidth = newValue;
 		},
 		randomSeed: 'drawToTheBiggerCanvas',
 	},
 	mounted: function () {
-		this.context = this.$refs.a.getContext('2d');
+		this.context = this.$refs.aCanvas.getContext('2d');
 		this.context.strokeStyle = this.currentColor;
 		this.context.lineWidth = this.brushSize;
 		this.context.lineCap = 'round';
@@ -61,10 +64,6 @@ var app = window.Vue.createApp({
 		},
 	},
 	methods: {
-		setBrushColor: function (color) {
-			this.currentColor = color + '33';
-			this.context.strokeStyle = this.currentColor;
-		},
 		getPointFromEvent: function (event) {
 			return {
 				x: event.offsetX / this.multiplier,
@@ -108,7 +107,7 @@ var app = window.Vue.createApp({
 		},
 		drawToTheBiggerCanvas: function () {
 			var sourceContext = this.context;
-			var destinationContext = this.$refs.b.getContext('2d');
+			var destinationContext = this.$refs.bCanvas.getContext('2d');
 			var sourceColors = sourceContext.getImageData(0, 0, this.width, this.height).data;
 			var width = this.width;
 			var height = this.height;
