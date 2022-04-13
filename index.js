@@ -1,9 +1,9 @@
 var app = window.Vue.createApp({
 	data: function () {
 		return {
-			multiplier: 8,
-			width: 50,
-			height: 50,
+			multiplier: 20,
+			width: 20,
+			height: 20,
 			lastPoint: null,
 			currentColor: '#fff',
 			colors: 'ff5400-ff6d00-ff8500-ff9100-ff9e00-00b4d8-0096c7-0077b6-023e8a-03045e'.split('-'),

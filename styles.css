@@ -20,4 +20,5 @@ a {
 button,
 canvas {
 	border: 1px solid #333;
+	image-rendering: pixelated;
 }
