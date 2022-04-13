@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta
+		name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+	>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./styles.css" />
+	<title>Truchet Painter</title>
+</head>
+<body>
+
+<div
+	id="app"
+>
+	<div>
+		<canvas
+			ref="a"
+			v-bind="aProps"
+			v-on="drawHandlers"
+		></canvas>
+		<canvas
+			ref="b"
+			v-bind="bProps"
+		></canvas>
+	</div>
+	<div
+		class="colors"
+	>
+		<button
+			v-for="color in colors"
+			:style="{
+				backgroundColor: '#' + color,
+				width: this.buttonSize,
+				height: this.buttonSize,
+			}"
+			@click="setBrushColor('#' + color)"
+		></button>
+	</div>
+</div>
+<div>Inspiration: <a href="https://twitter.com/MrmoTarius/status/1474359705787064322" target="_blank">"Cherry Blossom" by Mrmo Tarius</a></div>
+<div>Also this hell yeah: <a href="https://twitter.com/MrmoTarius/status/1474334106754371585" target="_blank">And this editor? Yeeeeah~</a></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.32/vue.global.js"></script>
+<script src="./index.js"></script>
+</body>
+</html>
