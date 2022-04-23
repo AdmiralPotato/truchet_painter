@@ -26,6 +26,12 @@ button.active {
 	border: 1px solid #eee;
 }
 
+label {
+	display: block;
+	margin: 4px;
+	border: 1px solid #333;
+	padding: 4px;
+}
 label > span {
 	display: block;
 }

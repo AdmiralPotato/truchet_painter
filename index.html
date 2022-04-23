@@ -16,6 +16,13 @@
 	id="app"
 >
 	<div>
+		<div>
+			<img
+				ref="image"
+				@load="handleImageLoad"
+				src="./lovebirds_transparent.png"
+			/>
+		</div>
 		<canvas
 			ref="aCanvas"
 			v-bind="aProps"
@@ -44,7 +51,39 @@
 	</div>
 	<div>
 		<label>
-			<span>brushSize</span>
+			<span>Resample divisor: {{ scaleFraction }}</span>
+			<input
+				type="range"
+				v-model="scaleFraction"
+				step="1"
+				min="1"
+				max="20"
+			/>
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>Draw Background: {{ drawBackground }}</span>
+			<input
+				type="checkbox"
+				v-model="drawBackground"
+				value="true"
+			/>
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>Use Transparency: {{ useTransparency }}</span>
+			<input
+				type="checkbox"
+				v-model="useTransparency"
+				value="true"
+			/>
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>brushSize: {{ brushSize }}</span>
 			<input
 				type="range"
 				v-model="brushSize"
@@ -56,7 +95,19 @@
 	</div>
 	<div>
 		<label>
-			<span>randomSeed</span>
+			<span>lineWidth: {{ lineWidth }}</span>
+			<input
+				type="range"
+				v-model="lineWidth"
+				step="1"
+				min="1"
+				:max="multiplier"
+			/>
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>randomSeed: {{ randomSeed }}</span>
 			<input
 				type="range"
 				v-model="randomSeed"
